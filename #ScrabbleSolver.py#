@@ -1,0 +1,68 @@
+"""
+Version 1.0 with ugliest validWords function
+
+Reads in a list of legal words, a .txt with 
+one word per line and 
+and a set of 7 letters (rack) and returns all 
+possible words that can be constructed 
+from that set and the
+base scores for those words
+
+Mike Xie
+
+ex: python ScrabbleSolver.py 
+
+"""
+import collections
+from sys import argv # need to put arguments somewhere
+script, filename, rack  = argv
+wordList = []
+dictionaryFile = open(filename, 'r')
+# Scores
+scores = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
+         "f": 4, "i": 1, "h": 4, "k": 5, "j": 8, "m": 3,
+         "l": 1, "o": 1, "n": 1, "q": 10, "p": 3, "s": 1,
+         "r": 1, "u": 1, "t": 1, "w": 4, "v": 4, "y": 4,
+         "x": 8, "z": 10}
+
+
+
+def validWordCheck(rack, word): # returns a boolean for if the rack can make the word     
+        tempRack = rack
+        valid = True
+        for letter in word:
+                if letter in tempRack:
+                        tempRack.remove(letter)
+                else:
+                        valid = False
+        return valid           
+
+# Put words into a list so we can use them. 
+if __name__ == '__main__':	
+	# Convert all words to CAPS, removes white space, puts in 
+	# the wordlist dictionary
+	
+        for word in dictionaryFile:
+		word = word.rstrip('\n').upper()
+		wordList.append(word) 
+	print wordList # just for testing
+	# Convert rack to CAPS to be comparable
+	rack = rack.upper()
+	# store valid plays in an array, this is what we return
+	validPlays = [] 
+	for word in wordlist:
+		# each new iteration we have to reset the temp rack and 
+		# assume the word is valid until proven otherwise
+		valid = True
+		tempRack = list(rack)
+		# this loop checks if the letters match and if so strikes
+		# it from the temp rack so duplicate letters don't mess it up
+		for letter in word:
+			if letter not in rack:
+				valid = False # we only add to list if it's true
+			else:
+				tempRack.remove(letter)
+		valid.append)(		
+	
+                        
+                        
