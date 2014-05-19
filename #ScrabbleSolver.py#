@@ -1,6 +1,7 @@
 """
-Version 1.0 with ugliest validWords function
-
+Version 1.0 brute force super inefficient implementation 
+in terms of time and space complexity
+Mike Xie
 Reads in a list of legal words, a .txt with 
 one word per line and 
 and a set of 7 letters (rack) and returns all 
@@ -8,16 +9,14 @@ possible words that can be constructed
 from that set and the
 base scores for those words
 
-Mike Xie
-
-ex: python ScrabbleSolver.py 
+ex: python ScrabbleSolver.py sowpods.txt QXZYFUT
+['FUTZ','FY','TUX','UT','XU','YU','YUFT','YUTZ']
 
 """
-import collections
 from sys import argv # need to put arguments somewhere
 script, filename, rack  = argv
-wordList = []
-dictionaryFile = open(filename, 'r')
+
+dictionaryFile = open(filename, 'r') # is a file of some sort
 # Scores
 scores = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
          "f": 4, "i": 1, "h": 4, "k": 5, "j": 8, "m": 3,
@@ -25,44 +24,46 @@ scores = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
          "r": 1, "u": 1, "t": 1, "w": 4, "v": 4, "y": 4,
          "x": 8, "z": 10}
 
+# takes a file object returns an array 
+# this has O(n) space complexity because we store all of the words 
+# and is totally not necessary
+# we can get to O(1) if we just read from txt directly
+# next implementation
+def dictToList(aDictionary):
+	wordList = []
+	for word in aDictionary:
+		word = word.rstrip().upper()
+		wordList.append(word)
+	return wordList
 
+def validPlays(aWordList, aRack):
+	validPlayList = []
+	for word in aWordList:
+		if validWordCheck(aRack, word):
+			validPlayList.append(word)
+	return validPlayList		
 
-def validWordCheck(rack, word): # returns a boolean for if the rack can make the word     
-        tempRack = rack
+def validWordCheck(aRack, aWord): # returns a boolean for if the rack can make the word     
+        tempRack = list(aRack)
         valid = True
-        for letter in word:
-                if letter in tempRack:
-                        tempRack.remove(letter)
-                else:
+        for letter in aWord:
+                if letter not in tempRack:
                         valid = False
+                else:
+                        tempRack.remove(letter)
         return valid           
+def test():
+    assert validWordCheck("BAGELS", "BAGEL")
+    assert not validWordCheck("BAGEL", "BAGELS")
+    assert not validWordCheck("EEEE", "EEEEE")
+    assert not validWordCheck("XQZF", "FERDXN")
+    assert not validWordCheck("", "A")
+    wordList = ["BAGELS","EEEE", "DOG", "BAG","12345"]
+    rack = "BAGELSEEE"
+    rack2 = "BAGELDO"
+    print validPlays(wordList, rack)
+    print validPlays(wordList, rack2)
+    print dictToList(dictionaryFile)
 
-# Put words into a list so we can use them. 
-if __name__ == '__main__':	
-	# Convert all words to CAPS, removes white space, puts in 
-	# the wordlist dictionary
-	
-        for word in dictionaryFile:
-		word = word.rstrip('\n').upper()
-		wordList.append(word) 
-	print wordList # just for testing
-	# Convert rack to CAPS to be comparable
-	rack = rack.upper()
-	# store valid plays in an array, this is what we return
-	validPlays = [] 
-	for word in wordlist:
-		# each new iteration we have to reset the temp rack and 
-		# assume the word is valid until proven otherwise
-		valid = True
-		tempRack = list(rack)
-		# this loop checks if the letters match and if so strikes
-		# it from the temp rack so duplicate letters don't mess it up
-		for letter in word:
-			if letter not in rack:
-				valid = False # we only add to list if it's true
-			else:
-				tempRack.remove(letter)
-		valid.append)(		
-	
-                        
-                        
+wordList = dictToList(dictionaryFile)
+print validPlays(wordList, rack)
